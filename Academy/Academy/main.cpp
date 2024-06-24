@@ -1,4 +1,4 @@
-// Academy
+ο»Ώ// Academy
 #include<iostream>
 
 using namespace std;
@@ -69,7 +69,7 @@ public:
 	};
 	~Student() override { cout << "SDestructor:\t" << this << "\n"; };
 
-	void info()const override //οεπεξοπεδελÿεμ
+	void info()const override //ΠΏΠµΡ€ΠµΠΎΠΏΡ€ΠµΠ΄ΠµΠ»ΡΠµΠΌ
 	{
 		Human::info();
 		cout << " " << speciality << " " << group << " " << rating << " " << attendance << "\n";

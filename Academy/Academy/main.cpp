@@ -165,7 +165,8 @@ void main()
 	{
 		new Student("Pinkman", "Jessy", 22, "Chemistry", "WW_220", 70, 97),
 		new Teacher("White", "Wolter", 50, "Chemistry", 25),
-		new Graduate("Vercetty", "Tommy", 30,"Theft", "Vice", 97, 98, "Vice", 9)
+		new Graduate("Shreder", "Hank", 40, "Criminalistic", "OBN",80, 90, "Hou to catch Heisenberg", 5),
+		new Graduate("Vercetty", "Tommy", 30,"Theft", "Vice", 97, 98, "Vice", 4)
 	};
 	cout << delimiter;
 

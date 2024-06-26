@@ -254,6 +254,7 @@ void main()
 	else
 	{
 		string temp = "333";
+		fout2 << " " << temp << "\n";
 		fout2.write((char*)&temp, sizeof(string));	//Запись в файл 
 		fout2.close();
 	};
@@ -261,6 +262,7 @@ void main()
 
 
 	string temp1;
+	string temp2;
 
 	// Чтение из файла
 	ifstream fin2;
@@ -269,8 +271,9 @@ void main()
 		cout << "Ошибка открытия файла!\n";
 	else
 	{
+		fin2 >> temp2;
 		fin2.read((char*)&temp1, sizeof(string));//Чтение из файла 
-		cout << temp1 << "\n";
+		cout << temp1 <<" " << "\n";
 		fin2.close();
 		cout << delimiter;
 	}

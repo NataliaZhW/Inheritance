@@ -1,5 +1,6 @@
 ﻿// Academy
 #include<iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -9,8 +10,8 @@ using namespace std;
 #define HUMAN_GIVE_PARAMETRS last_name, first_name, age
 #define STUDENT_TAKE_PARAMETRS const std::string& speciality, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETRS speciality, group, rating, attendance
-#define TEACHER_TAKE_PARAMETRS const std::string& speciality, unsigned int experiensce
-#define TEACHER_GIVE_PARAMETRS speciality, experiensce
+#define TEACHER_TAKE_PARAMETRS const std::string& speciality, unsigned int experience
+#define TEACHER_GIVE_PARAMETRS speciality, experience
 #define GRADUATE_TAKE_PARAMETRS const std::string& diplom_name, unsigned int ball
 #define GRADUATE_GIVE_PARAMETRS diplom_name, ball
 
@@ -39,7 +40,21 @@ public:
 	virtual ~Human() { cout << "HDestructor:\t" << this << "\n"; };
 
 	virtual void info()const { cout << last_name << " " << first_name << " " << age << " y/o\n"; }
+
+	//virtual std::ostream& info(std::ostream& os)const
+	//{
+	//	return os << last_name << " " << first_name << " " << age << " y/o";
+	//}
+
 };
+
+////dynamic_cast<>()
+//std::ostream& operator<<(std::ostream& os, const Human& obg)
+//{
+//	//return os << obg.get_last_name() << " " << obg.get_first_name() << " " << obg.get_age() << " y/o";
+//  return obg.info(os);
+//}
+
 
 class Student :public Human
 {
@@ -74,24 +89,34 @@ public:
 		Human::info();
 		cout << " " << speciality << " " << group << " " << rating << " " << attendance << "\n";
 	}
+	//std::ostream& info(std::ostream& os)const override //переопределить
+	//{
+	//	return Human::info(os) << " "
+	//		<< speciality << " " << group << " " << rating << " " << attendance;
+	//}
 };
+
+//std::ostream& operator<<(std::ostream& os, const Student& obg)
+//{
+//	return os << (Human&)obg << " " << obg.get_speciality() << " " << obg.get_group() << " " << obg.get_rating() << " " << obg.get_attendance();
+//}
 
 class Teacher :public Human
 {
 private:
 	std::string speciality;
-	unsigned int experiensce;
+	unsigned int experience;
 public:
 	const std::string& get_speciality() const { return speciality; }
-	unsigned int get_experiensce()const { return experiensce; }
+	unsigned int get_experience()const { return experience; }
 	void set_speciality(const std::string& speciality) { this->speciality = speciality; }
-	void set_experiensce(unsigned int experiensce) { this->experiensce = experiensce; }
+	void set_experiensce(unsigned int experience) { this->experience = experience; }
 
 	//Constructor
 	Teacher(HUMAN_TAKE_PARAMETRS, TEACHER_TAKE_PARAMETRS) :Human(HUMAN_GIVE_PARAMETRS)
 	{
 		set_speciality(speciality);
-		set_experiensce(experiensce);
+		set_experiensce(experience);
 		cout << "TConstructor:\t" << this << "\n";
 	};
 	~Teacher() override { cout << "TDestructor:\t" << this << "\n"; };
@@ -99,9 +124,18 @@ public:
 	void info()const override
 	{
 		Human::info();
-		cout << " " << speciality << " " << experiensce << "\n";
+		cout << " " << speciality << " " << experience << "\n";
 	}
+	//std::ostream& info(std::ostream& os)const
+	//{
+	//	return Human::info(os) << " " << speciality << " " << experience << " years" << endl;
+	//}
 };
+
+//std::ostream& operator<<(std::ostream& os, const Teacher& obg)
+//{
+//	return os << (Human&)obg << " " << obg.get_speciality() << " " << obg.get_experience() ;
+//}
 
 class Graduate :public Student
 {
@@ -110,7 +144,7 @@ private:
 	unsigned int ball;
 public:
 	const std::string& get_diplom_name() const { return diplom_name; }
-	unsigned int get_balle()const { return ball; }
+	unsigned int get_ball()const { return ball; }
 	void set_diplom_name(const std::string& diplom_name) { this->diplom_name = diplom_name; }
 	void set_ball(unsigned int ball) { this->ball = ball; }
 
@@ -128,7 +162,16 @@ public:
 		Student::info();
 		cout << " " << diplom_name << " " << ball << "\n";
 	}
+	//std::ostream& info(std::ostream& os)const override
+	//{
+	//	return Student::info(os) << " " << diplom_name << " " << ball << "\n";
+	//}
 };
+
+//std::ostream& operator<<(std::ostream& os, const Graduate& obg)
+//{
+//	return os << (Student&)obg << " " << obg.get_diplom_name() << " " << obg.get_ball();
+//}
 
 std::ostream& operator << (std::ostream& os, const Human& obg)
 {
@@ -136,6 +179,7 @@ std::ostream& operator << (std::ostream& os, const Human& obg)
 	obg.info();
 	return os;
 }
+
 //std::istream& operator >> (std::istream& is, Human& obg){}
 
 //#define INHERITANCE_CHECK
@@ -176,13 +220,61 @@ void main()
 	{
 		//cout << i << " " << sizeof(group[i]) << "\n";
 		//group[i]->info();
-		cout << *group[i] << "\n";
+		//cout << typeid(group[i]).name() << "\n";
+		cout << *group[i];//<< "\n"
 		cout << delimiter;
 	}
 
+	//for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	//{
+	//	//group[i]->info();
+	//	cout << typeid(*group[i]).name() << ":\t";
+	//	//https://legacy.cplusplus.com/doc/tutorial/typecasting/
+	//	//Specialization (DownCast):
+	//	if (typeid(*group[i]) == typeid(Student))cout << *dynamic_cast<Student*>(group[i]) << endl;
+	//	if (typeid(*group[i]) == typeid(Teacher))cout << *dynamic_cast<Teacher*>(group[i]) << endl;
+	//	if (typeid(*group[i]) == typeid(Graduate))cout << *dynamic_cast<Graduate*>(group[i]) << endl;
+	//	cout << delimiter << endl;		
+	//}
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i]; //group[i]->~Human();			
 		cout << delimiter;
 	}
+
+
+
+	string path1 = "myFile1.txt";
+	string path2 = "myFile2.txt";
+	// запись в файл
+	ofstream fout2;
+	fout2.open(path2);
+	if (!fout2.is_open())
+		cout << "Ошибка открытия файла!\n";
+	else
+	{
+		string temp = "333";
+		fout2.write((char*)&temp, sizeof(string));	//Запись в файл 
+		fout2.close();
+	};
+	//cout << "\n";
+
+
+	string temp1;
+
+	// Чтение из файла
+	ifstream fin2;
+	fin2.open(path2);
+	if (!fin2.is_open())
+		cout << "Ошибка открытия файла!\n";
+	else
+	{
+		fin2.read((char*)&temp1, sizeof(string));//Чтение из файла 
+		cout << temp1 << "\n";
+		fin2.close();
+		cout << delimiter;
+	}
+
+
+
 }

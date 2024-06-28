@@ -1,0 +1,5 @@
+4
+class Student
+class Teacher
+class Graduate
+class Student

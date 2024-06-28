@@ -248,8 +248,6 @@ public:
 class Graduate :public Student
 {
 private:
-	static const int DIPLOM_NAME_WIDTH = 15;
-	static const int BALL_WIDTH = 3;
 	std::string diplom_name{ "" };
 	unsigned int ball{ 0 };
 public:
@@ -308,9 +306,8 @@ public:
 	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
 	{
 		Student::info(ofs);
-	
-		ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name;
-		ofs.width(BALL_WIDTH); ofs << left << ball;
+		ofs << " * " << diplom_name << " * ";
+		ofs << ball;
 		return ofs;
 	}
 };
@@ -646,15 +643,15 @@ void main()
 	//cout << delimiter;
 	std::string path1 = "group.txt";
 
-	//Print(group, sizeof(group) / sizeof(group[0]));
+	Print(group, sizeof(group) / sizeof(group[0]));
 	Save(group, sizeof(group) / sizeof(group[0]), path1);
 	Clear(group, sizeof(group) / sizeof(group[0]));
 
 	//Read(group, sizeof(group) / sizeof(group[0]), "group.txt");
-	//const int SIZE0 = 0;
-	//Human* group1 = new Human[ReadSize(path1)];
+	const int SIZE0 = 0;
+	Human* group1 = new Human[ReadSize(path1)];
 
-	//Read(&group1, ReadSize(path1), path1);
+	Read(&group1, ReadSize(path1), path1);
 
 	//for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	//{

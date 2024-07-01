@@ -1,5 +1,5 @@
-Pinkman * Jessy * 22 * Chemistry * WW_220 * 70 * 97
-White * Wolter * 50 * Chemistry * 25
-Shreder * Hank * 40 * Criminalistic * OBN * 80 * 90 * Hou to catch Heisenberg * 5
-Vercetty * Tommy * 30 * Theft * Vice * 97 * 98
-Diaz * Ricardo * 50 * Weapons Distribution * 20
+Student:  Pinkman        Jessy          22   Chemistry                WW_220  70      97      
+Teacher:  White          Wolter         50   Chemistry                25   
+Graduate: Shreder        Hank           40   Criminalistic            OBN     80      90      Hou to catch Heisenberg,  5  
+Student:  Vercetty       Tommy          30   Theft                    Vice    97      98      
+Teacher:  Diaz           Ricardo        50   Weapons Distribution     20   

@@ -87,22 +87,32 @@ public:
 	virtual void info()const { cout << last_name << " " << first_name << " " << age << " y/o\n"; }
 
 	virtual std::ostream& info(std::ostream& os)const { return os << last_name << " * " << first_name << " * " << age; }
-	virtual std::ofstream& info(std::ofstream& ofs)const
+	virtual std::ofstream& write(std::ofstream& ofs)const
 	{
-		ofs << last_name << " * " << first_name << " * " << age;		
-		//ofs << strchr(typeid (*this).name(), ' ') + 1 << " * " << last_name << " * " << first_name << " * " << age;
+		//ofs << last_name << " * " << first_name << " * " << age;
 		
-		/*ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1)+":";
+		//ofs << strchr(typeid (*this).name(), ' ') + 1 << " * " << last_name << " * " << first_name << " * " << age;
+
+		ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1)+":";
 		ofs.width(LAST_NAME_WIDTH); ofs << left << last_name;
 		ofs.width(FIRST_NAME_WIDTH); ofs << left << first_name;
-		ofs.width(AGE_WIDTH); ofs << left << age;*/
+		ofs.width(AGE_WIDTH); ofs << left << age;
 		return ofs;
+	}
+	virtual std::ifstream& read_l(std::ifstream& ifs)
+	{
+		ifs >> last_name >> first_name >> age;
+		return ifs;
 	}
 };
 
 //dynamic_cast<>()
 std::ostream& operator<<(std::ostream& os, const Human& obg) { return obg.info(os); }
-std::ofstream& operator<<(std::ofstream& ofs, const Human& obg) { return obg.info(ofs); }
+std::ofstream& operator<<(std::ofstream& ofs, const Human& obg) { return obg.write(ofs); }
+std::ifstream& operator>>(std::ifstream& ifs, Human& obg)
+{
+	return obg.read_l(ifs);
+}
 
 class Student :public Human
 {
@@ -170,16 +180,22 @@ public:
 	{
 		return Human::info(os) << " * " << speciality << " * " << group << " * " << rating << " * " << attendance;
 	}
-	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
+	std::ofstream& write(std::ofstream& ofs)const override //переопределяем
 	{
-		Human::info(ofs);
-		ofs << " * " << speciality << " * " << group << " * " << rating << " * " << attendance;
-		/*ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
+		Human::write(ofs);
+		//ofs << " * " << speciality << " * " << group << " * " << rating << " * " << attendance;
+		ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
 		ofs.width(GROUP_WIDTH); ofs << left << group;
 		ofs.width(RATING_WIDTH); ofs << left << rating;
-		ofs.width(ATTENDANCE_WIDTH); ofs << left << attendance;*/
+		ofs.width(ATTENDANCE_WIDTH); ofs << left << attendance;
 
-		return ofs;		
+		return ofs;
+	}
+	std::ifstream& read_l(std::ifstream& ifs) override
+	{
+		Human::read_l(ifs);
+		ifs >> speciality >> group >> rating >> attendance;
+		return ifs;
 	}
 };
 
@@ -235,22 +251,28 @@ public:
 	{
 		return Human::info(os) << " * " << speciality << " * " << experience;
 	}
-	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
+	std::ofstream& write(std::ofstream& ofs)const override //переопределяем
 	{
-		Human::info(ofs);
-		ofs << " * " << speciality << " * " << experience;
+		Human::write(ofs);
+		//ofs << " * " << speciality << " * " << experience;
 
-		/*ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
-		ofs.width(GROUP_WIDTH); ofs << left << experience;*/
-		
-		return ofs;		
+		ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
+		ofs.width(GROUP_WIDTH); ofs << left << experience;
+
+		return ofs;
+	}
+	std::ifstream& read_l(std::ifstream& ifs) override
+	{
+		Human::read_l(ifs);
+		ifs >> speciality >> experience;
+		return ifs;
 	}
 };
 
 class Graduate :public Student
 {
 private:
-	static const int DIPLOM_NAME_WIDTH = 15;
+	static const int DIPLOM_NAME_WIDTH = 25;
 	static const int BALL_WIDTH = 3;
 	std::string diplom_name{ "" };
 	unsigned int ball{ 0 };
@@ -307,14 +329,21 @@ public:
 	{
 		return Student::info(os) << " * " << diplom_name << " * " << ball;
 	}
-	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
+	std::ofstream& write(std::ofstream& ofs)const override //переопределяем
 	{
-		Student::info(ofs);
-		ofs << " * " << diplom_name << " * " << ball;
+		Student::write(ofs);
+		//ofs << " * " << diplom_name << " * " << ball;
 
-		/*ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name;
-		ofs.width(BALL_WIDTH); ofs << left << ball;*/
+		ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name<<', ';
+		ofs.width(BALL_WIDTH); ofs << left << ball;
 		return ofs;
+	}
+	std::ifstream& read_l(std::ifstream& ifs) override
+	{
+		Student::read_l(ifs);
+		std::getline(ifs, diplom_name, ',');
+		ifs >> ball;
+		return ifs;
 	}
 };
 
@@ -376,6 +405,55 @@ int ReadSize(const std::string& filename)
 		fin1.close();
 	}
 }
+
+Human* HumanFactory(const std::string& type)
+{
+	Human* human = nullptr;
+	if (type == "Human:") human = new Human;
+	if (type == "Student:") human = new Student;
+	if (type == "Teacher:") human = new Teacher;
+	if (type == "Graduate:") human = new Graduate;
+	return human;
+}
+
+Human** Load(const std::string& filename, int& n)
+{
+	Human** group = nullptr;
+	std::ifstream fin(filename);
+	if (!fin.is_open())
+		std::cout << "Ошибка открытия файла!\n";
+	else
+	{
+		n = 0;
+		while (!fin.eof())
+		{
+			std::string buffer;
+			std::getline(fin, buffer);
+			if (buffer.size() < 16)continue;
+			n++;
+		}
+		cout << n << endl;
+		group = new Human * [n] {};//создаем только указатели, не сами объекты
+
+		cout << fin.tellg() << endl;
+		fin.clear();
+		fin.seekg(0);
+		cout << fin.tellg() << endl;
+
+		for (int i = 0; i < n; i++)
+		{
+			std::string type;
+			fin >> type;
+			group[i] = HumanFactory(type);
+			if (group[i]) fin >> *group[i];
+			else continue;
+		}
+
+		fin.close();
+	}
+	return group;
+}
+
 void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(group) / sizeof(group[0])
 {
 	int temp_size;
@@ -606,7 +684,7 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 				//cout << temp_age << " " << temp_text << "\n";
 				Temp1 = new Graduate(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS, GRADUATE_GIVE_PARAMETRS);
 				Temp1->info();
-				
+
 				//cout << *group1[i];
 			}
 			group1[i] = Temp1;
@@ -619,11 +697,12 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 	delete Temp1;
 };
 //#define INHERITANCE_CHECK
-#define POLYMORPHISM
+//#define POLYMORPHISM
 
 void main()
 {
 	setlocale(LC_ALL, "");
+	std::string path1 = "group.txt";
 
 #ifdef INHERITANCE_CHECK
 	Human human("Vercetty", "Tommy", 30);
@@ -653,7 +732,6 @@ void main()
 
 	};
 	//cout << delimiter;
-	std::string path1 = "group.txt";
 
 	//Print(group, sizeof(group) / sizeof(group[0]));
 	Save(group, sizeof(group) / sizeof(group[0]), path1);
@@ -661,10 +739,15 @@ void main()
 
 	//Read(group, sizeof(group) / sizeof(group[0]), "group.txt");
 	const int SIZE0 = 0;
-	Human* group1 = new Human[ReadSize(path1)+1];
+	Human* group1 = new Human[ReadSize(path1) + 1];
 
-	Read(&group1, ReadSize(path1)+1, path1);
-	Print(&group1, ReadSize(path1)+1);
+	Read(&group1, ReadSize(path1) + 1, path1);
+	Print(&group1, ReadSize(path1) + 1);
 #endif // POLYMORPHISM
+
+	int n = 0;
+	Human** group2 = Load(path1,n);
+	Print(group2, n);
+	Clear(group2, n);
 
 }

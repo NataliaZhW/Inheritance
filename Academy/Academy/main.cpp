@@ -614,10 +614,12 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 		}
 		fin1.close();
 		fin2.close();
-	}
 
+	}
+	delete Temp1;
 };
 //#define INHERITANCE_CHECK
+#define POLYMORPHISM
 
 void main()
 {
@@ -639,6 +641,7 @@ void main()
 
 #endif // INHERITANCE_CHECK
 
+#ifdef POLYMORPHISM
 	// Generalization:
 	Human* group[] =
 	{
@@ -658,10 +661,10 @@ void main()
 
 	//Read(group, sizeof(group) / sizeof(group[0]), "group.txt");
 	const int SIZE0 = 0;
-	Human* group1 = new Human[ReadSize(path1)];
+	Human* group1 = new Human[ReadSize(path1)+1];
 
-	Read(&group1, ReadSize(path1), path1);
-	Print(&group1, ReadSize(path1));
-
+	Read(&group1, ReadSize(path1)+1, path1);
+	Print(&group1, ReadSize(path1)+1);
+#endif // POLYMORPHISM
 
 }

@@ -89,11 +89,13 @@ public:
 	virtual std::ostream& info(std::ostream& os)const { return os << last_name << " * " << first_name << " * " << age; }
 	virtual std::ofstream& info(std::ofstream& ofs)const
 	{
+		ofs << last_name << " * " << first_name << " * " << age;		
 		//ofs << strchr(typeid (*this).name(), ' ') + 1 << " * " << last_name << " * " << first_name << " * " << age;
-		ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1)+":";
+		
+		/*ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1)+":";
 		ofs.width(LAST_NAME_WIDTH); ofs << left << last_name;
 		ofs.width(FIRST_NAME_WIDTH); ofs << left << first_name;
-		ofs.width(AGE_WIDTH); ofs << left << age;
+		ofs.width(AGE_WIDTH); ofs << left << age;*/
 		return ofs;
 	}
 };
@@ -171,10 +173,12 @@ public:
 	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
 	{
 		Human::info(ofs);
-		ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
+		ofs << " * " << speciality << " * " << group << " * " << rating << " * " << attendance;
+		/*ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
 		ofs.width(GROUP_WIDTH); ofs << left << group;
 		ofs.width(RATING_WIDTH); ofs << left << rating;
-		ofs.width(ATTENDANCE_WIDTH); ofs << left << attendance;
+		ofs.width(ATTENDANCE_WIDTH); ofs << left << attendance;*/
+
 		return ofs;		
 	}
 };
@@ -234,9 +238,10 @@ public:
 	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
 	{
 		Human::info(ofs);
-	
-		ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
-		ofs.width(GROUP_WIDTH); ofs << left << experience;
+		ofs << " * " << speciality << " * " << experience;
+
+		/*ofs.width(SPECIALITY_WIDTH); ofs << left << speciality;
+		ofs.width(GROUP_WIDTH); ofs << left << experience;*/
 		
 		return ofs;		
 	}
@@ -305,9 +310,10 @@ public:
 	std::ofstream& info(std::ofstream& ofs)const override //переопределяем
 	{
 		Student::info(ofs);
-	
-		ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name;
-		ofs.width(BALL_WIDTH); ofs << left << ball;
+		ofs << " * " << diplom_name << " * " << ball;
+
+		/*ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name;
+		ofs.width(BALL_WIDTH); ofs << left << ball;*/
 		return ofs;
 	}
 };

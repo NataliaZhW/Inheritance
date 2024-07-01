@@ -30,16 +30,16 @@ public:
 	const std::string& get_last_name() const { return last_name; }
 	const std::string& get_first_name() const { return first_name; }
 	const unsigned int get_age()const { return age; }
-	void set_last_name(const std::string& last_name)
-	{
-		this->last_name = last_name;
-	}
+	void set_last_name(const std::string& last_name) { this->last_name = last_name; }
 	void set_first_name(const std::string& first_name) { this->first_name = first_name; }
 	void set_age(unsigned int age) { this->age = age; }
 
 	//Constructor
 	Human()
 	{
+		//this->first_name = "";
+		//this->last_name = "";
+		//this->age = 0; 
 		cout << "0_HConstructor:\t" << this << "\n";
 	};
 	Human(HUMAN_TAKE_PARAMETRS)
@@ -56,13 +56,13 @@ public:
 		first_name = obg.first_name;
 		age = obg.age;
 	}
-	//Human(Human&& obg)
-	//{
-	//	cout << "\nЗапустился контруктор присваивания\n";
-	//	last_name = obg.last_name;
-	//	first_name = obg.first_name;
-	//	age = obg.age;
-	//}
+	Human(Human&& obg)
+	{
+		cout << "\nЗапустился контруктор присваивания\n";
+		last_name = obg.last_name;
+		first_name = obg.first_name;
+		age = obg.age;
+	}
 	virtual ~Human() { cout << "HDestructor:\t" << this << "\n"; };
 
 	Human& operator= (const Human& obg)
@@ -74,26 +74,23 @@ public:
 		this->set_age(obg.get_age());
 		return *this;
 	}
-	//Human& operator= (Human&& obg)
-	//{
-	//	cout << "\nЗапустился оператор присваивания\n";
-	//	if (this == &obg) return *this;
-	//	this->last_name = obg.last_name;
-	//	this->first_name = obg.first_name;
-	//	this->age = obg.age;
-	//	return *this;
-	//}
+	Human& operator= (Human&& obg)
+	{
+		cout << "\nЗапустился оператор присваивания\n";
+		if (this == &obg) return *this;
+		this->last_name = obg.last_name;
+		this->first_name = obg.first_name;
+		this->age = obg.age;
+		return *this;
+	}
 
 	virtual void info()const { cout << last_name << " " << first_name << " " << age << " y/o\n"; }
 
-	virtual std::ostream& info(std::ostream& os)const
-	{
-		return os << last_name << " * " << first_name << " * " << age;
-	}
+	virtual std::ostream& info(std::ostream& os)const { return os << last_name << " * " << first_name << " * " << age; }
 	virtual std::ofstream& info(std::ofstream& ofs)const
 	{
 		//ofs << strchr(typeid (*this).name(), ' ') + 1 << " * " << last_name << " * " << first_name << " * " << age;
-		ofs.width(TYPE_WIDTH); ofs << left << (std::string)(strchr((typeid (*this).name() ), ' ') + 1)+":";
+		ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1)+":";
 		ofs.width(LAST_NAME_WIDTH); ofs << left << last_name;
 		ofs.width(FIRST_NAME_WIDTH); ofs << left << first_name;
 		ofs.width(AGE_WIDTH); ofs << left << age;
@@ -103,7 +100,7 @@ public:
 
 //dynamic_cast<>()
 std::ostream& operator<<(std::ostream& os, const Human& obg) { return obg.info(os); }
-std::ofstream& operator<<(std::ofstream& os, const Human& obg) { return obg.info(os); }
+std::ofstream& operator<<(std::ofstream& ofs, const Human& obg) { return obg.info(ofs); }
 
 class Student :public Human
 {
@@ -353,7 +350,7 @@ void Save(Human* group[], const int n, const std::string& filename)
 	}
 	fout.close();
 	std::string cmd1 = "notepad " + filename;
-	system(cmd1.c_str());
+	system(cmd1.c_str());//метод c_str() возвращает содержимое объекта string в виде обычной C-string (NULL terminated line)
 }
 int ReadSize(const std::string& filename)
 {
@@ -377,6 +374,7 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 {
 	int temp_size;
 	string temp_text;
+	Human* Temp1 = nullptr;
 	// Чтение из файла
 	std::ifstream fin2;
 	std::ifstream fin1;
@@ -418,10 +416,11 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 				}
 				fin1 >> temp_age;
 				//cout << temp_age << " " << temp_text << "\n";
-				Human Temp1(temp_last_name, temp_first_name, temp_age);
-				Temp1.info();
-				*group1[i] = Temp1;
-				cout << group1[i];
+				//Human Temp1(temp_last_name, temp_first_name, temp_age);
+				Temp1 = new Human(temp_last_name, temp_first_name, temp_age);
+				Temp1->info();
+				//group1[i] = Temp1;
+				//cout << group1[i];
 			}
 			if (temp_text == "Student")
 			{
@@ -477,10 +476,10 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 				fin1 >> attendance;
 
 				//cout << temp_age << " " << temp_text << "\n";
-				Student Temp1(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS);
-				Temp1.info();
-				group1[i] = &Temp1;
-				group1[i]->info();
+				Temp1 = new Student(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS);
+				Temp1->info();
+				//group1[i] = Temp1;
+				//group1[i]->info();
 				//cout << *group1[i];
 			}
 			if (temp_text == "Teacher")
@@ -525,9 +524,9 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 				fin1 >> experience;
 
 				//cout << temp_age << " " << temp_text << "\n";
-				Teacher Temp2(HUMAN_GIVE_PARAMETRS, TEACHER_GIVE_PARAMETRS);
-				Temp2.info();
-				//group1[i] = &Temp2;
+				Temp1 = new Teacher(HUMAN_GIVE_PARAMETRS, TEACHER_GIVE_PARAMETRS);
+				Temp1->info();
+				//group1[i] = Temp1;
 				//group1[i]->info();
 			}
 			if (temp_text == "Graduate")
@@ -599,12 +598,13 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 
 
 				//cout << temp_age << " " << temp_text << "\n";
-				Graduate Temp1(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS, GRADUATE_GIVE_PARAMETRS);
-				Temp1.info();
-				//*group1[i] = Temp1;
+				Temp1 = new Graduate(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS, GRADUATE_GIVE_PARAMETRS);
+				Temp1->info();
+				
 				//cout << *group1[i];
 			}
-
+			group1[i] = Temp1;
+			Temp1 = nullptr;
 		}
 		fin1.close();
 		fin2.close();
@@ -651,10 +651,11 @@ void main()
 	Clear(group, sizeof(group) / sizeof(group[0]));
 
 	//Read(group, sizeof(group) / sizeof(group[0]), "group.txt");
-	//const int SIZE0 = 0;
-	//Human* group1 = new Human[ReadSize(path1)];
+	const int SIZE0 = 0;
+	Human* group1 = new Human[ReadSize(path1)];
 
-	//Read(&group1, ReadSize(path1), path1);
+	Read(&group1, ReadSize(path1), path1);
+	Print(&group1, sizeof(group1) / sizeof(group1[0]));
 
 	//for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	//{

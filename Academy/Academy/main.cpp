@@ -478,7 +478,7 @@ void Read(Human* group1[], const int n, const std::string& filename)//(sizeof(gr
 				//cout << temp_age << " " << temp_text << "\n";
 				Teacher Temp2(HUMAN_GIVE_PARAMETRS, TEACHER_GIVE_PARAMETRS);
 				Temp2.info();
-				group1[i] = &Temp2;
+				//group1[i] = &Temp2;
 				//group1[i]->info();
 			}
 			if (temp_text == "Graduate")

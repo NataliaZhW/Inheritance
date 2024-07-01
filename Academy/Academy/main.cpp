@@ -661,57 +661,7 @@ void main()
 	Human* group1 = new Human[ReadSize(path1)];
 
 	Read(&group1, ReadSize(path1), path1);
-	Print(&group1, sizeof(group1) / sizeof(group1[0]));
-
-	//for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
-	//{
-	//	cout << typeid(*group[i]).name() << ":\t";
-	//	if (typeid(*group[i]) == typeid(Student))cout << *dynamic_cast<Student*>(group[i]) << endl;
-	//	if (typeid(*group[i]) == typeid(Teacher))cout << *dynamic_cast<Teacher*>(group[i]) << endl;
-	//	if (typeid(*group[i]) == typeid(Graduate))cout << *dynamic_cast<Graduate*>(group[i]) << endl;
-	//	cout << delimiter << endl;		
-	//}
-
-	//cout << sizeof(group) << " " << sizeof(group[0]) << "\n";
-	//cout << delimiter;
-
-
-
-
-	//string path1 = "myFile1.txt";
-	//string path2 = "myFile2.txt";
-	//// запись в файл
-	//ofstream fout2;
-	//fout2.open(path2);
-	//if (!fout2.is_open())
-	//	cout << "Ошибка открытия файла!\n";
-	//else
-	//{
-	//	string temp = "333";
-	//	fout2 << " " << temp << "\n";
-	//	fout2.write((char*)&temp, sizeof(string));	//Запись в файл 
-	//	fout2.close();
-	//};
-	////cout << "\n";
-
-
-	//string temp1;
-	//string temp2;
-
-	//// Чтение из файла
-	//ifstream fin2;
-	//fin2.open(path2);
-	//if (!fin2.is_open())
-	//	cout << "Ошибка открытия файла!\n";
-	//else
-	//{
-	//	fin2 >> temp2;
-	//	fin2.read((char*)&temp1, sizeof(string));//Чтение из файла 
-	//	cout << temp1 <<" " << "\n";
-	//	fin2.close();
-	//	cout << delimiter;
-	//}
-
+	Print(&group1, ReadSize(path1));
 
 
 }

@@ -1,4 +1,4 @@
-// Academy
+п»ї// Academy
 #include<iostream>
 #include <fstream>
 #include <string>
@@ -48,14 +48,14 @@ public:
 	};
 	Human(Human& obg)
 	{
-		cout << "\nЗапустился контруктор присваивания\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РєРѕРЅС‚СЂСѓРєС‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ\n";
 		last_name = obg.last_name;
 		first_name = obg.first_name;
 		age = obg.age;
 	}
 	Human(Human&& obg)
 	{
-		cout << "\nЗапустился контруктор присваивания\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РєРѕРЅС‚СЂСѓРєС‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ\n";
 		last_name = obg.last_name;
 		first_name = obg.first_name;
 		age = obg.age;
@@ -64,7 +64,7 @@ public:
 
 	Human& operator= (const Human& obg)
 	{
-		cout << "\nЗапустился оператор копирования\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РѕРїРµСЂР°С‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ\n";
 		if (this == &obg) return *this;
 		this->set_last_name(obg.get_last_name());
 		this->set_first_name(obg.get_first_name());
@@ -73,7 +73,7 @@ public:
 	}
 	Human& operator= (Human&& obg)
 	{
-		cout << "\nЗапустился оператор присваивания\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РѕРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ\n";
 		if (this == &obg) return *this;
 		this->last_name = obg.last_name;
 		this->first_name = obg.first_name;
@@ -90,7 +90,7 @@ public:
 
 		//ofs << strchr(typeid (*this).name(), ' ') + 1 << " * " << last_name << " * " << first_name << " * " << age;
 
-		ofs.width(TYPE_WIDTH); ofs << right << std::string(strchr(typeid (*this).name(), ' ') + 1) + " |"; //Название класса
+		ofs.width(TYPE_WIDTH); ofs << right << std::string(strchr(typeid (*this).name(), ' ') + 1) + " |"; //РќР°Р·РІР°РЅРёРµ РєР»Р°СЃСЃР°
 		ofs.width(LAST_NAME_WIDTH); ofs << right << (last_name + " |");
 		ofs.width(FIRST_NAME_WIDTH); ofs << right << first_name + " |";
 		ofs.width(AGE_WIDTH); ofs << right << age;
@@ -147,7 +147,7 @@ public:
 	};
 	Student(Student& obg) :Human(obg.get_last_name(), obg.get_first_name(), obg.get_age())
 	{
-		cout << "\nЗапустился контруктор присваивания Student\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РєРѕРЅС‚СЂСѓРєС‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ Student\n";
 		this->speciality = obg.speciality;
 		this->group = obg.group;
 		this->rating = obg.rating;
@@ -157,7 +157,7 @@ public:
 
 	Student& operator= (const Student& obg)
 	{
-		cout << "\nЗапустился оператор копирования Student\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РѕРїРµСЂР°С‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ Student\n";
 		if (this == &obg) return *this;
 
 		this->set_last_name(obg.get_last_name());
@@ -171,16 +171,16 @@ public:
 		return *this;
 	}
 
-	void info()const override //переопределяем
+	void info()const override //РїРµСЂРµРѕРїСЂРµРґРµР»СЏРµРј
 	{
 		Human::info();
 		cout << " " << speciality << " " << group << " " << rating << " " << attendance << "\n";
 	}
-	std::ostream& info(std::ostream& os)const override //переопределяем
+	std::ostream& info(std::ostream& os)const override //РїРµСЂРµРѕРїСЂРµРґРµР»СЏРµРј
 	{
 		return Human::info(os) << " | " << speciality << " | " << group << " | " << rating << " | " << attendance;
 	}
-	std::ofstream& write(std::ofstream& ofs)const override //переопределяем
+	std::ofstream& write(std::ofstream& ofs)const override //РїРµСЂРµРѕРїСЂРµРґРµР»СЏРµРј
 	{
 		Human::write(ofs);
 		//ofs << " * " << speciality << " * " << group << " * " << rating << " * " << attendance;
@@ -225,7 +225,7 @@ public:
 	};
 	Teacher(Teacher& obg) :Human(obg.get_last_name(), obg.get_first_name(), obg.get_age())
 	{
-		cout << "\nЗапустился контруктор присваивания Student\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РєРѕРЅС‚СЂСѓРєС‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ Student\n";
 		this->speciality = obg.speciality;
 		this->experience = obg.experience;
 	}
@@ -241,7 +241,7 @@ public:
 
 		this->speciality = obg.speciality;
 		this->experience = obg.experience;
-		cout << "\nЗапустился оператор копирования Student\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РѕРїРµСЂР°С‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ Student\n";
 		return *this;
 	}
 	void info()const override
@@ -253,7 +253,7 @@ public:
 	{
 		return Human::info(os) << " | " << speciality << " | " << experience;
 	}
-	std::ofstream& write(std::ofstream& ofs)const override //переопределяем
+	std::ofstream& write(std::ofstream& ofs)const override //РїРµСЂРµРѕРїСЂРµРґРµР»СЏРµРј
 	{
 		Human::write(ofs);
 		//ofs << " * " << speciality << " * " << experience;
@@ -297,7 +297,7 @@ public:
 	};
 	Graduate(Graduate& obg) :Student(obg.get_last_name(), obg.get_first_name(), obg.get_age(), obg.get_speciality(), obg.get_group(), obg.get_rating(), obg.get_attendance())
 	{
-		cout << "\nЗапустился контруктор присваивания Graduate\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РєРѕРЅС‚СЂСѓРєС‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ Graduate\n";
 		set_diplom_name(obg.get_diplom_name());
 		set_ball(obg.get_ball());
 	}
@@ -305,7 +305,7 @@ public:
 
 	Graduate& operator= (const Graduate& obg)
 	{
-		cout << "\nЗапустился оператор копирования Graduate\n";
+		cout << "\nР—Р°РїСѓСЃС‚РёР»СЃСЏ РѕРїРµСЂР°С‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ Graduate\n";
 		if (this == &obg) return *this;
 
 		this->set_last_name(obg.get_last_name());
@@ -330,7 +330,7 @@ public:
 	{
 		return Student::info(os) << " | " << diplom_name << " | " << ball;
 	}
-	std::ofstream& write(std::ofstream& ofs)const override //переопределяем
+	std::ofstream& write(std::ofstream& ofs)const override //РїРµСЂРµРѕРїСЂРµРґРµР»СЏРµРј
 	{
 		Student::write(ofs);
 		//ofs << " * " << diplom_name << " * " << ball;
@@ -377,7 +377,7 @@ void Save(Human* group[], const int n, const std::string& filename)
 	}
 	fout.close();
 	std::string cmd1 = "notepad " + filename;
-	system(cmd1.c_str());//метод c_str() возвращает содержимое объекта string в виде обычной C-string (NULL terminated line)
+	system(cmd1.c_str());//РјРµС‚РѕРґ c_str() РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРѕРґРµСЂР¶РёРјРѕРµ РѕР±СЉРµРєС‚Р° string РІ РІРёРґРµ РѕР±С‹С‡РЅРѕР№ C-string (NULL terminated line)
 }
 int ReadSize(const std::string& filename)
 {
@@ -386,7 +386,7 @@ int ReadSize(const std::string& filename)
 	fin1.open(filename);
 	if (!fin1.is_open())
 	{
-		std::cout << "Ошибка открытия файла!\n";
+		std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°!\n";
 		return 1;
 	}
 	else
@@ -413,13 +413,13 @@ Human** Load(const std::string& filename, int& n)
 	Human** group = nullptr;
 	std::ifstream fin(filename);
 	if (!fin.is_open())
-		std::cout << "Ошибка открытия файла!\n";
+		std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°!\n";
 	else
 	{
 		n = 0;
 		while (!fin.eof())
 		{
-			//Считаем количество объектов, оно точно соответсвует количеству непустых строк в файле:
+			//РЎС‡РёС‚Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РѕР±СЉРµРєС‚РѕРІ, РѕРЅРѕ С‚РѕС‡РЅРѕ СЃРѕРѕС‚РІРµС‚СЃРІСѓРµС‚ РєРѕР»РёС‡РµСЃС‚РІСѓ РЅРµРїСѓСЃС‚С‹С… СЃС‚СЂРѕРє РІ С„Р°Р№Р»Рµ:
 
 			// //const int SIZE = 256;
 			//char buffer[SIZE]{};	//NULL-Terminated Line
@@ -431,15 +431,15 @@ Human** Load(const std::string& filename, int& n)
 			n++;
 		}
 		cout << n << endl;
-		group = new Human * [n] {};//создаем только указатели, не сами объекты Выделяем память под массив:
+		group = new Human * [n] {};//СЃРѕР·РґР°РµРј С‚РѕР»СЊРєРѕ СѓРєР°Р·Р°С‚РµР»Рё, РЅРµ СЃР°РјРё РѕР±СЉРµРєС‚С‹ Р’С‹РґРµР»СЏРµРј РїР°РјСЏС‚СЊ РїРѕРґ РјР°СЃСЃРёРІ:
 
-		// Возвращаемся в начало файла:
+		// Р’РѕР·РІСЂР°С‰Р°РµРјСЃСЏ РІ РЅР°С‡Р°Р»Рѕ С„Р°Р№Р»Р°:
 		cout << fin.tellg() << endl;
 		fin.clear();
 		fin.seekg(0);
 		cout << fin.tellg() << endl;
 
-		for (int i = 0; i < n; i++)// Выпоняем чтение объектов:
+		for (int i = 0; i < n; i++)// Р’С‹РїРѕРЅСЏРµРј С‡С‚РµРЅРёРµ РѕР±СЉРµРєС‚РѕРІ:
 		{
 			std::string type;
 			fin >> type;
@@ -456,17 +456,17 @@ Human** Load(const std::string& filename, int& n)
 Human** Read(const std::string& filename, int& n)//
 {
 	Human** group1 = nullptr;
-	// Чтение из файла
+	// Р§С‚РµРЅРёРµ РёР· С„Р°Р№Р»Р°
 	std::ifstream fin1;
 	fin1.open(filename);
 	if (!fin1.is_open())
-		std::cout << "Ошибка открытия файла!\n";
+		std::cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°!\n";
 	else
 	{
 		int temp_size;
 		fin1 >> temp_size;
 		//cout << temp_size << " temp_size\n";//
-		group1 = new Human * [temp_size] {};//создаем только указатели, не сами объекты
+		group1 = new Human * [temp_size] {};//СЃРѕР·РґР°РµРј С‚РѕР»СЊРєРѕ СѓРєР°Р·Р°С‚РµР»Рё, РЅРµ СЃР°РјРё РѕР±СЉРµРєС‚С‹
 
 		string temp_text;
 

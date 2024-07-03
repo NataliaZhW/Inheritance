@@ -90,10 +90,10 @@ public:
 	virtual std::ofstream& write(std::ofstream& ofs)const
 	{
 		//ofs << last_name << " * " << first_name << " * " << age;
-		
+
 		//ofs << strchr(typeid (*this).name(), ' ') + 1 << " * " << last_name << " * " << first_name << " * " << age;
 
-		ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1)+":";
+		ofs.width(TYPE_WIDTH); ofs << left << std::string(strchr(typeid (*this).name(), ' ') + 1) + ":";
 		ofs.width(LAST_NAME_WIDTH); ofs << left << last_name;
 		ofs.width(FIRST_NAME_WIDTH); ofs << left << first_name;
 		ofs.width(AGE_WIDTH); ofs << left << age;
@@ -194,8 +194,13 @@ public:
 	std::ifstream& read_l(std::ifstream& ifs) override
 	{
 		Human::read_l(ifs);
-		ifs >> speciality >> group >> rating >> attendance;
-		return ifs;
+		char buffer[SPECIALITY_WIDTH]{};
+		ifs.read(buffer, SPECIALITY_WIDTH);//читает заданное количество байт 
+		for (int i = SPECIALITY_WIDTH - 1; buffer[i] == ' '; i--) { buffer[i] = 0; }
+		while (buffer[0] == ' ')for (int i = 0; buffer[0]; i++) buffer[i] = buffer[i + 1];
+		this->speciality = buffer;
+		ifs >> group >> rating >> attendance;
+		return ifs;				
 	}
 };
 
@@ -264,7 +269,21 @@ public:
 	std::ifstream& read_l(std::ifstream& ifs) override
 	{
 		Human::read_l(ifs);
-		ifs >> speciality >> experience;
+		//ifs >> speciality >> experience;
+
+		const int SIZE = SPECIALITY_WIDTH;
+		char buffer[SIZE]{};
+		ifs.read(buffer, SIZE);//читает заданное количество байт 
+		int poz = strrchr(buffer, ' ') - buffer;//strrchr - string reverse character  - 
+		//находит последнее вхождение указанного символа в указанной строке 
+//buffer[poz] = 0;
+		for (int i = SIZE - 1; buffer[i] == ' '; i--) { buffer[i] = 0; } //= '\0';
+		while (buffer[0] == ' ')
+		{
+			for (int i = 0; buffer[0]; i++) buffer[i] = buffer[i + 1];
+		}
+		this->speciality = buffer;
+		ifs >> experience;
 		return ifs;
 	}
 };
@@ -334,7 +353,7 @@ public:
 		Student::write(ofs);
 		//ofs << " * " << diplom_name << " * " << ball;
 
-		ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name<<', ';
+		ofs.width(DIPLOM_NAME_WIDTH); ofs << left << diplom_name << ', ';
 		ofs.width(BALL_WIDTH); ofs << left << ball;
 		return ofs;
 	}
@@ -746,8 +765,8 @@ void main()
 #endif // POLYMORPHISM
 
 	int n = 0;
-	Human** group2 = Load(path1,n);
+	Human** group2 = Load(path1, n);
 	Print(group2, n);
 	Clear(group2, n);
 
-}
+				}

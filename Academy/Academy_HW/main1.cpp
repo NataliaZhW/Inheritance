@@ -36,10 +36,7 @@ public:
 
 	//Constructor
 	Human()
-	{
-		//this->first_name = "";
-		//this->last_name = "";
-		//this->age = 0; 
+	{		
 		cout << "0_HConstructor:\t" << this << "\n";
 	};
 	Human(HUMAN_TAKE_PARAMETRS)
@@ -105,7 +102,6 @@ public:
 		while (std::getline(ifs, last_name, '|'));
 		while (std::getline(ifs, first_name, '|'));
 		ifs >> age;
-		//std::getline(ifs, , '|'); 
 		return ifs;
 	}
 };
@@ -202,8 +198,6 @@ public:
 		while (std::getline(ifs, group, '|'));
 		ifs >> rating >> attendance;
 		return ifs;
-		//std::getline(ifs, , '|'); 
-		//std::getline(ifs, , '|'); 
 	}
 };
 
@@ -325,9 +319,6 @@ public:
 
 		set_diplom_name(obg.get_diplom_name());
 		set_ball(obg.get_ball());
-
-		//this->diplom_name = obg.diplom_name();
-		//this->ball = obg.ball();
 		return *this;
 	}
 	void info()const override
@@ -358,8 +349,6 @@ public:
 	}
 };
 
-//std::istream& operator >> (std::istream& is, Human& obg){}
-
 void Print(Human* group[], const int n)
 {
 	cout << delimiter << endl;
@@ -379,16 +368,6 @@ void Clear(Human* group[], const int n)
 }
 void Save(Human* group[], const int n, const std::string& filename)
 {
-	//std::ofstream fout1("size_" + filename);
-	//fout1 << n << endl;
-	//for (int i = 0; i < n; i++)
-	//{
-	//	fout1 << typeid(*group[i]).name() << endl;
-	//}
-	//fout1.close();
-	//std::string cmd = "notepad " + ("size_" + filename);
-	//system(cmd.c_str());
-
 	std::ofstream fout(filename);
 	fout << n << endl;
 
@@ -404,7 +383,7 @@ int ReadSize(const std::string& filename)
 {
 	int temp_size{};
 	std::ifstream fin1;
-	fin1.open(filename);//"size_" + 
+	fin1.open(filename);
 	if (!fin1.is_open())
 	{
 		std::cout << "Ошибка открытия файла!\n";
@@ -474,11 +453,6 @@ Human** Load(const std::string& filename, int& n)
 	return group;
 }
 
-//string& read_temp_text(std::string& temp_text)
-//{
-//	fin1 >> temp_text;	
-//}
-
 Human** Read(const std::string& filename, int& n)//
 {
 	Human** group1 = nullptr;
@@ -491,7 +465,7 @@ Human** Read(const std::string& filename, int& n)//
 	{
 		int temp_size;
 		fin1 >> temp_size;
-		cout << temp_size << " temp_size\n";//
+		//cout << temp_size << " temp_size\n";//
 		group1 = new Human * [temp_size] {};//создаем только указатели, не сами объекты
 
 		string temp_text;
@@ -500,21 +474,7 @@ Human** Read(const std::string& filename, int& n)//
 		{
 			string temp_class;
 			while(temp_class=="") fin1 >> temp_class;
-			cout << temp_class << " temp_class\n";//
-
-			//std::string type;
-			//fin >> type;
-			//group[i] = HumanFactory(temp_class);
-			//if (group[i]) fin1 >> *group[i];
-			//else continue;
-
-			//group[i] = HumanFactory(temp_class);
-
-			Human* Temp1 = nullptr;
-			Student* Temp2 = nullptr;
-			//fin1 >> *group[i];
-			//group1[i] = Temp2; ///
-			//group1[i]->info();
+			//cout << temp_class << " temp_class\n";//
 
 			string last_name = "";
 			string first_name = "";
@@ -554,18 +514,11 @@ Human** Read(const std::string& filename, int& n)//
 
 			if (temp_class == "Human")
 			{
-				//cout << temp_age << " " << temp_text << "\n";
-				//Human Temp1(temp_last_name, temp_first_name, temp_age);
 				group1[i] = new Human(HUMAN_GIVE_PARAMETRS);
-				group1[i]->info();
-
-				//group1[i] = Temp1;
-				//cout << group1[i];
+				//group1[i]->info();
 			}
 			if (temp_class == "Student" || temp_class == "Graduate")
-			{
-				//flag = 0;
-
+			{				
 				while (true) //speciality
 				{
 					fin1 >> temp_text;
@@ -589,18 +542,12 @@ Human** Read(const std::string& filename, int& n)//
 
 				if (temp_class == "Student")
 				{
-					//cout << temp_age << " " << temp_text << "\n";
 					group1[i] = new Student(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS);
-					group1[i]->info();
-					//group1[i] = Temp1;
 					//group1[i]->info();
-					//cout << *group1[i];
 				}
 			}
 			if (temp_class == "Teacher")
 			{
-				//flag = 0;				
-
 				while (true) //speciality
 				{
 					fin1 >> temp_text;
@@ -611,18 +558,12 @@ Human** Read(const std::string& filename, int& n)//
 					flag = 1;
 				}
 				fin1 >> experience >> temp_text;
-
-				//cout << temp_age << " " << temp_text << "\n";
+							
 				group1[i] = new Teacher(HUMAN_GIVE_PARAMETRS, TEACHER_GIVE_PARAMETRS);
-				group1[i]->info();
-				//group1[i] = Temp1;
 				//group1[i]->info();
-			}
+				}
 			if (temp_class == "Graduate")
 			{
-
-				//flag = 0;
-
 				while (true) //diplom_name
 				{
 					fin1 >> temp_text;
@@ -633,28 +574,13 @@ Human** Read(const std::string& filename, int& n)//
 					flag = 1;
 				}
 				fin1 >> ball >> temp_text;
-
-				//cout << temp_age << " " << temp_text << "\n";
+								
 				group1[i] = new Graduate(HUMAN_GIVE_PARAMETRS, STUDENT_GIVE_PARAMETRS, GRADUATE_GIVE_PARAMETRS);
-				group1[i]->info();
-
-				//cout << *group1[i];
+				//group1[i]->info();
 			}
-
-			////////std::string type;
-			////////fin >> type;
-			//////group[i] = HumanFactory(temp_class);
-			//////if (group[i]) fin >> *group[i];
-			//////else continue;
-			
-			//group1[i] = HumanFactory(temp_class);
-			//group1[i] = Temp1;
-			
-			Temp1 = nullptr;
 		}
 		fin1.close();
 	}
-	//delete Temp1;
 	return group1;
 };
 

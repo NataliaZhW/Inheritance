@@ -197,7 +197,8 @@ public:
 		char buffer[SPECIALITY_WIDTH]{};
 		ifs.read(buffer, SPECIALITY_WIDTH);//читает заданное количество байт 
 		for (int i = SPECIALITY_WIDTH - 1; buffer[i] == ' '; i--) { buffer[i] = 0; }
-		while (buffer[0] == ' ')for (int i = 0; buffer[0]; i++) buffer[i] = buffer[i + 1];
+		while (buffer[0] == ' ')
+		{ for (int i = 0; buffer[i]; i++) buffer[i] = buffer[i + 1]; }
 		this->speciality = buffer;
 		ifs >> group >> rating >> attendance;
 		return ifs;				
@@ -280,7 +281,7 @@ public:
 		for (int i = SIZE - 1; buffer[i] == ' '; i--) { buffer[i] = 0; } //= '\0';
 		while (buffer[0] == ' ')
 		{
-			for (int i = 0; buffer[0]; i++) buffer[i] = buffer[i + 1];
+			for (int i = 0; buffer[i]; i++) buffer[i] = buffer[i + 1];
 		}
 		this->speciality = buffer;
 		ifs >> experience;

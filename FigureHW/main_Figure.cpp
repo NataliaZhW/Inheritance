@@ -50,7 +50,7 @@ public:
 	{
 		cout << "\nфункция Площадь круга!\n";
 		setColich();
-		return getWidth() * PI * PI;
+		return getWidth() * getWidth() * PI;
 	}
 	virtual double Perimetr()const
 	{
@@ -205,26 +205,18 @@ public:
 	virtual void Picture()const
 	{
 		cout << "\nфункция Рисунок треугольника!\n";
-		//double supplementW = (getWidth() - getHeight())/ getWidth()/2;
-		for (int i = 0; i < getWidth(); i++)
+		for (int i = 0; i < getHeight() + 3; i++)
 		{
-			/*for (int j = 0; j > supplementW*(getWidth()- i)/ 2 ;j++)
-				{
-					cout << "  ";
-				}*/
-				//for (int j = 0; j < getHeight(); j++)			
-			for (int j = 0; j < getHeight(); j++)
+			for (int j = 0; j < getWidth() + 3; j++)
 			{
-
-				if (j <= i * getHeight() / getWidth())
+				if (j >= (getWidth()  - i * getWidth() / (getHeight() + .5) - .1) / 2 && j <= (getWidth() + .1 + i *( getWidth()+ .1 ) / (getHeight()+.5) ) / 2)
 				{
-					cout << " " << "*";
+					cout << " *";
 				}
 				else
 				{
 					cout << "  ";
 				}
-
 			}
 			cout << endl;
 		}
@@ -263,7 +255,7 @@ int main()
 	cout << delimiter;
 
 
-	Triangle triangle1(7, 14);
+	Triangle triangle1(16, 10);
 	triangle1.info();
 	cout << triangle1.Area() << "\n";
 	cout << triangle1.Perimetr() << "\n";

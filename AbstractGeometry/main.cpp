@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <math.h>
 #include <cmath>
 #include <Windows.h>
@@ -16,7 +16,7 @@ namespace Geometry
 		CONSOLE_GREEN = 0xAA,
 		CONSOLE_RED = 0xCC,
 		CONSOLE_DEFAULT = 0x07,
-		//RGB_RED = (0xFF0000), //Добавляем RGB цвета
+		//RGB_RED = (0xFF0000), //Р”РѕР±Р°РІР»СЏРµРј RGB С†РІРµС‚Р°
 		//RGB_GREEN = (0x00FF00),
 		//RGB_BLUE = (0xFFFF00),
 		//RGB_WHITE = (0xFFFFFF)
@@ -37,8 +37,8 @@ namespace Geometry
 		void set_Color(Color color) { this->color = color; }
 		virtual void info()const
 		{
-			cout << "Площадь фигуры:  " << get_area() << endl;
-			cout << "Периметр фигуры: " << get_perimeter() << endl;
+			cout << "РџР»РѕС‰Р°РґСЊ С„РёРіСѓСЂС‹:  " << get_area() << endl;
+			cout << "РџРµСЂРёРјРµС‚СЂ С„РёРіСѓСЂС‹: " << get_perimeter() << endl;
 			draw();
 		}
 	};
@@ -76,7 +76,7 @@ namespace Geometry
 		virtual void info()const
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Длина стороны: " << side << endl;
+			cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹: " << side << endl;
 			Shape::info();
 		}
 	};
@@ -101,24 +101,24 @@ namespace Geometry
 		double get_perimeter()  const override { return (width + height) * 2; }
 		void draw()const override
 		{
-			HWND hwnd = GetConsoleWindow(); //1)Получаем дескриптор окна консоли. Переменная в которой хранится описание чего-то.
+			HWND hwnd = GetConsoleWindow(); //1)РџРѕР»СѓС‡Р°РµРј РґРµСЃРєСЂРёРїС‚РѕСЂ РѕРєРЅР° РєРѕРЅСЃРѕР»Рё. РџРµСЂРµРјРµРЅРЅР°СЏ РІ РєРѕС‚РѕСЂРѕР№ С…СЂР°РЅРёС‚СЃСЏ РѕРїРёСЃР°РЅРёРµ С‡РµРіРѕ-С‚Рѕ.
 			//description 
-			//HWND - Handler to Window(обработчик или дескриптор окна)
-			HDC hdc = GetDC(hwnd); //2) получаем контекст устройства (Device context) окна консоли
-			//DC - это то на чем мы будем рисовать
+			//HWND - Handler to Window(РѕР±СЂР°Р±РѕС‚С‡РёРє РёР»Рё РґРµСЃРєСЂРёРїС‚РѕСЂ РѕРєРЅР°)
+			HDC hdc = GetDC(hwnd); //2) РїРѕР»СѓС‡Р°РµРј РєРѕРЅС‚РµРєСЃС‚ СѓСЃС‚СЂРѕР№СЃС‚РІР° (Device context) РѕРєРЅР° РєРѕРЅСЃРѕР»Рё
+			//DC - СЌС‚Рѕ С‚Рѕ РЅР° С‡РµРј РјС‹ Р±СѓРґРµРј СЂРёСЃРѕРІР°С‚СЊ
 			HPEN hPen = CreatePen(PS_SOLID, 5, get_Color());
-			//3) Создаем карандаш, Pen рисует контур фигуры
-			//PS_SOLID - сплошная линия
-			//5-толщина линии в пикселях
-			// 4) cоздаем кисточку
+			//3) РЎРѕР·РґР°РµРј РєР°СЂР°РЅРґР°С€, Pen СЂРёСЃСѓРµС‚ РєРѕРЅС‚СѓСЂ С„РёРіСѓСЂС‹
+			//PS_SOLID - СЃРїР»РѕС€РЅР°СЏ Р»РёРЅРёСЏ
+			//5-С‚РѕР»С‰РёРЅР° Р»РёРЅРёРё РІ РїРёРєСЃРµР»СЏС…
+			// 4) cРѕР·РґР°РµРј РєРёСЃС‚РѕС‡РєСѓ
 			HBRUSH hBrush = CreateSolidBrush(get_Color());
-			//5) Выбираем чем и на чем рисовать
+			//5) Р’С‹Р±РёСЂР°РµРј С‡РµРј Рё РЅР° С‡РµРј СЂРёСЃРѕРІР°С‚СЊ
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
-			//6) Рисуем прямоугольник:
+			//6) Р РёСЃСѓРµРј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє:
 			::Rectangle(hdc, 250, 50, 400, 150);
-			//чтобы показать что это глобальная функция надо поставить двойное двоеточие без операнда слева.
-			//7) Освобождаем ресурсы:
+			//С‡С‚РѕР±С‹ РїРѕРєР°Р·Р°С‚СЊ С‡С‚Рѕ СЌС‚Рѕ РіР»РѕР±Р°Р»СЊРЅР°СЏ С„СѓРЅРєС†РёСЏ РЅР°РґРѕ РїРѕСЃС‚Р°РІРёС‚СЊ РґРІРѕР№РЅРѕРµ РґРІРѕРµС‚РѕС‡РёРµ Р±РµР· РѕРїРµСЂР°РЅРґР° СЃР»РµРІР°.
+			//7) РћСЃРІРѕР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹:
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
 
@@ -143,24 +143,24 @@ namespace Geometry
 		virtual void info()const
 		{
 			cout << typeid(*this).name() << endl;
-			cout << "Ширина: " << width << endl;
-			cout << "Ширина: " << height << endl;
+			cout << "РЁРёСЂРёРЅР°: " << width << endl;
+			cout << "РЁРёСЂРёРЅР°: " << height << endl;
 			Shape::info();
 		}
 	};
-	class Circle : public Shape //производный класс Круг
+	class Circle : public Shape //РїСЂРѕРёР·РІРѕРґРЅС‹Р№ РєР»Р°СЃСЃ РљСЂСѓРі
 	{
 	private:
-		int width{ 10 }; //Ширина, здесь радиус
+		int width{ 10 }; //РЁРёСЂРёРЅР°, Р·РґРµСЃСЊ СЂР°РґРёСѓСЃ
 	public:
-		// коонструктор, +вызывает конструктор базового класса для унаследованных полей
+		// РєРѕРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ, +РІС‹Р·С‹РІР°РµС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ Р±Р°Р·РѕРІРѕРіРѕ РєР»Р°СЃСЃР° РґР»СЏ СѓРЅР°СЃР»РµРґРѕРІР°РЅРЅС‹С… РїРѕР»РµР№
 		Circle(int width, Color color) : Shape(color) {}
 		~Circle() {}
-		// Геттеры и сеттеры
+		// Р“РµС‚С‚РµСЂС‹ Рё СЃРµС‚С‚РµСЂС‹
 		void setWidth(int width) { this->width = width; }
 		int getWidth()const { return width; }
 
-		// Методы
+		// РњРµС‚РѕРґС‹
 		void info()const override { Shape::info(); cout << " Circle " << this<< "\n"; }
 		double get_area()const override
 		{
@@ -194,9 +194,9 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 	Geometry::Square square1(5, Geometry::Color::CONSOLE_GREEN);
-	//cout << "Длина стороны : " << square1.get_side() << endl;
-	//cout << "Площадь квадрата:  " << square1.get_area() << endl;
-	//cout << "Периметр квадрата: " << square1.get_perimeter() << endl;
+	//cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ : " << square1.get_side() << endl;
+	//cout << "РџР»РѕС‰Р°РґСЊ РєРІР°РґСЂР°С‚Р°:  " << square1.get_area() << endl;
+	//cout << "РџРµСЂРёРјРµС‚СЂ РєРІР°РґСЂР°С‚Р°: " << square1.get_perimeter() << endl;
 	//square1.draw();
 	square1.info();
 

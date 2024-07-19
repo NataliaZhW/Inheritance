@@ -305,7 +305,7 @@ int main()
 	circle1.info();
 
 
-	Geometry::EquilateralTriangle e_triangle(120, 550, 50, 3, Geometry::Color::RGB_GREEN);
+	Geometry::EquilateralTriangle e_triangle(120, 300, 50, 7, Geometry::Color::RGB_GREEN);
 	e_triangle.info();
 	//system("pause"); 
 }

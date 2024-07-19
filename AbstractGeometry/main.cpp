@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#define _USE_MATH_DEFINES //файлик с константами типа Пи - M_PI можно использовать
+
 #define delimiter "\n----------------------------------------------\n\n"
 #define PI 3.14
 
@@ -17,10 +19,12 @@ namespace Geometry
 		CONSOLE_RED = 0xCC,
 		CONSOLE_DEFAULT = 0x07,
 
+		RGB_DEFAULT = (0xff000000), 
 		RGB_RED = (0x00ff0000), //Добавляем RGB цвета
 		RGB_GREEN = (0x0000ff00),
 		RGB_BLUE = (0x00ffff00),
 		RGB_WHITE = (0x00ffffff),
+		RGB_ELLOW = (0x0000ffff),
 		RGB_ELLOW_0 = (0x0000b3fd),
 		RGB_ELLOW_1 = (0x0002f0eb)
 	};
@@ -123,6 +127,7 @@ namespace Geometry
 			//HWND - Handler to Window(обработчик или дескриптор окна)
 			HDC hdc = GetDC(hwnd); //2) получаем контекст устройства (Device context) окна консоли
 			//DC - это то на чем мы будем рисовать
+			// выделяем память  потом надо сделать ReleaseDC(hwnd, hdc);
 			HPEN hPen = CreatePen(PS_SOLID, 5, get_Color());
 			//3) Создаем карандаш, Pen рисует контур фигуры
 			//PS_SOLID - сплошная линия
@@ -172,35 +177,31 @@ namespace Geometry
 	class Circle : public Shape //производный класс Круг
 	{
 	private:
-		int width{ 10 }; //Ширина, здесь радиус
+		double radius; //Ширина, здесь радиус
 	public:
 		// коонструктор, +вызывает конструктор базового класса для унаследованных полей
-		Circle(int width, SHAPE_TAKE_PARAMETERS) : Shape(SHAPE_GIVE_PARAMETERS) {}
+		Circle(int radius, SHAPE_TAKE_PARAMETERS) : Shape(SHAPE_GIVE_PARAMETERS) { set_radius(radius); }
 		~Circle() {}
 		// Геттеры и сеттеры
-		void setWidth(int width) { this->width = width; }
-		int getWidth()const { return width; }
+		void set_radius(int radius) { this->radius = radius; }
+		double get_radius()const { return this->radius; }
 
 		// Методы
-		void info()const override { Shape::info(); cout << " Circle " << this << "\n"; }
-		double get_area()const override
-		{
-			return getWidth() * getWidth() * PI;
-		}
-		virtual double get_perimeter()const
-		{
-			return getWidth() * PI * 2;
-		}
+		void info()const override { Shape::info(); cout << " Circle radius = " << radius << " adres: " << this << "\n"; }
+		double get_area()const override { return get_radius() * get_radius() * PI; }
+		virtual double get_perimeter()const { return get_radius() * PI * 2; }
 		void draw()const override
 		{
 			//system("CLS");
 			HWND hwnd = GetConsoleWindow();
-			HDC hdc = GetDC(hwnd);
-			HPEN hPen = CreatePen(PS_SOLID, 9, get_Color());
-			HBRUSH hBrush = CreateSolidBrush(Geometry::Color::CONSOLE_DEFAULT);
+			HDC hdc = GetDC(hwnd); // выделяем память  потом надо сделать ReleaseDC(hwnd, hdc);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, get_Color());
+			//HBRUSH hBrush = CreateSolidBrush(get_Color()); //Закрашеный
+			HBRUSH hBrush = CreateSolidBrush(Geometry::Color::RGB_GREEN); //Только границы
+
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
-			::Ellipse(hdc, start_x, start_y, width, width);
+			::Ellipse(hdc, start_x, start_y, start_x + 2 * radius, start_y + 2 * radius);
 
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
@@ -208,6 +209,23 @@ namespace Geometry
 			ReleaseDC(hwnd, hdc);
 		}
 	};
+	//class Triangle : public Shape
+	//{
+	//public:
+	//	Triangle : public Shape();
+	//	~Triangle : public Shape();
+
+	//private:
+
+	//};
+
+	//Triangle : public Shape::Triangle : public Shape()
+	//{
+	//}
+
+	//Triangle : public Shape::~Triangle : public Shape()
+	//{
+	//}
 
 
 }
@@ -221,10 +239,10 @@ int main()
 	////square1.draw();
 	//square1.info();
 
-	Geometry::Rectangle rectangle1(150, 80, 500, 50, 3, Geometry::Color::CONSOLE_GREEN);
+	Geometry::Rectangle rectangle1(150, 80, 50, 250, 3, Geometry::Color::RGB_BLUE);
 	rectangle1.info();
 
-	Geometry::Circle circle1(500, 500, 500, 6, Geometry::Color::RGB_ELLOW_0);
+	Geometry::Circle circle1(200, 50, 250, 7, Geometry::Color::RGB_ELLOW);
 	circle1.info();
 	//system("pause"); 
 }

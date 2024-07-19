@@ -20,9 +20,10 @@ namespace Geometry
 		CONSOLE_DEFAULT = 0x07,
 
 		RGB_DEFAULT = (0xff000000),
-		RGB_RED = (0x00ff0000), //Добавляем RGB цвета
+		RGB_RED = (0x000000ff), //Добавляем RGB цвета
 		RGB_GREEN = (0x0000ff00),
 		RGB_BLUE = (0x00ffff00),
+		RGB_DARK_BLUE = (0x00ff0000),
 		RGB_WHITE = (0x00ffffff),
 		RGB_ELLOW = (0x0000ffff),
 		RGB_ELLOW_0 = (0x0000b3fd),
@@ -73,10 +74,10 @@ namespace Geometry
 	//public:
 	//	Square(double side, Color color) : Shape(color) { set_side(side); }
 	//	virtual ~Square() {};
-
+	//
 	//	double get_area()  const override { return side * side; };
 	//	void set_side(double side) { this->side = side; }
-
+	//
 	//	double get_perimeter()  const override { return side * 4; }
 	//	void draw()const override
 	//	{
@@ -176,6 +177,7 @@ namespace Geometry
 			Shape::info();
 		}
 	};
+
 	class Circle : public Shape //производный класс Круг
 	{
 	private:
@@ -231,6 +233,10 @@ namespace Geometry
 				}
 				SetConsoleTextAttribute(hConcole, 0x07);
 			}
+			else
+			{
+				::Ellipse(hdc, start_x, start_y, start_x + 2 * radius - line, start_y + 2 * radius - line);
+			}
 
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
@@ -238,6 +244,7 @@ namespace Geometry
 			ReleaseDC(hwnd, hdc);
 		}
 	};
+
 	class Triangle :public Shape
 	{
 	public:
@@ -285,6 +292,98 @@ namespace Geometry
 			ReleaseDC(hwnd, hdc);
 		}
 	};
+
+	class IsoscelesTriangle :public Triangle //Равносторонний треугольник
+	{
+		double side1;
+		double side2; //Основание
+	public:
+		IsoscelesTriangle(double side1, double side2, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS) {
+			set_side1(side1); set_side2(side2);
+		}
+		~IsoscelesTriangle() {};
+
+		double get_side1()const { return side1; }
+		double get_side2()const { return side2; }
+		void set_side1(double side1) { this->side1 = side1; }
+		void set_side2(double side2) { this->side2 = side2; }
+		double get_height()const override { return sqrt(side1 * side1 - side2 / 2 * side2 / 2); }
+		double get_area()const override { return side2 / 2 * get_height(); }
+		double get_perimeter()const override { return side1 * 2 + side2; }
+		void draw()const override
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			//определяем массив точек треугольника
+			POINT point[] =
+			{
+				{start_x, get_height() + start_y},
+				{side2 + start_x, get_height() + start_y},
+				{side2 / 2 + start_x, start_y}
+			};
+			// Рисуем треугольник:
+			Polygon(hdc, point, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+	};
+
+	class RightTriangle :public Triangle //Равносторонний треугольник
+	{
+		double side1; //Катеты вертикальный
+		double side2; //Катеты горизонтальный
+	public:
+		RightTriangle(double side1, double side2, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS) {
+			set_side1(side1); set_side2(side2);
+		}
+		~RightTriangle() {};
+
+		double get_side1()const { return side1; }
+		double get_side2()const { return side2; }
+		void set_side1(double side1) { this->side1 = side1; }
+		void set_side2(double side2) { this->side2 = side2; }
+		double get_height()const override { return side1; }
+		double get_hypotenuse()const { return sqrt(side1 * side1 + side2 * side2); }
+		double get_area()const override { return side1 * side2; }
+		double get_perimeter()const override { return side1 + side2 + get_hypotenuse(); }
+		void draw()const override
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+
+			//определяем массив точек треугольника
+			POINT point[] =
+			{
+				{start_x, start_y},
+				{start_x, side1 + start_y},
+				{side2 + start_x, side1 + start_y}
+			};
+			// Рисуем треугольник:
+			Polygon(hdc, point, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+	};
+
 }
 
 
@@ -301,11 +400,14 @@ int main()
 	Geometry::Rectangle rectangle1(150, 80, 50, 250, 3, Geometry::Color::RGB_BLUE);
 	rectangle1.info();
 
-	Geometry::Circle circle1(100, 200, 1050, 70, Geometry::Color::RGB_ELLOW);
+	Geometry::Circle circle1(150, 500, 500, 70, Geometry::Color::RGB_ELLOW);
 	circle1.info();
 
-
-	Geometry::EquilateralTriangle e_triangle(120, 300, 50, 7, Geometry::Color::RGB_GREEN);
+	Geometry::EquilateralTriangle e_triangle(120, 400, 50, 2, Geometry::Color::RGB_GREEN);
 	e_triangle.info();
+	Geometry::IsoscelesTriangle i_triangle(150, 120, 550, 50, 2, Geometry::Color::RGB_DARK_BLUE);
+	i_triangle.info();
+	Geometry::RightTriangle r_triangle(200, 150, 700, 50, 2, Geometry::Color::RGB_BLUE);
+	r_triangle.info();
 	//system("pause"); 
 }

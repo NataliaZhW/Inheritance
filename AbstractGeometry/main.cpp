@@ -265,6 +265,12 @@ namespace Geometry
 		double get_height()const override { return sqrt(side * side - side / 2 * side / 2); }
 		double get_area()const override { return side / 2 * get_height(); }
 		double get_perimeter()const override { return side * 3; }
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона: " << side << endl;
+			Shape::info();
+		}
 		void draw()const override
 		{
 			HWND hwnd = GetConsoleWindow();
@@ -310,6 +316,13 @@ namespace Geometry
 		double get_height()const override { return sqrt(side1 * side1 - side2 / 2 * side2 / 2); }
 		double get_area()const override { return side2 / 2 * get_height(); }
 		double get_perimeter()const override { return side1 * 2 + side2; }
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Равнобедренная сторона: " << side1 << endl;
+			cout << "Основание: " << side2 << endl;
+			Shape::info();
+		}
 		void draw()const override
 		{
 			HWND hwnd = GetConsoleWindow();
@@ -356,6 +369,15 @@ namespace Geometry
 		double get_hypotenuse()const { return sqrt(side1 * side1 + side2 * side2); }
 		double get_area()const override { return side1 * side2; }
 		double get_perimeter()const override { return side1 + side2 + get_hypotenuse(); }
+		void info()const override
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "вертикальный катет: " << side1 << endl;
+			cout << "горизонтальный катет : " << side2 << endl;
+			cout << "Основание: " << get_hypotenuse() << endl;
+			Shape::info();
+		}
+
 		void draw()const override
 		{
 			HWND hwnd = GetConsoleWindow();

@@ -10,7 +10,7 @@ void ColorText();
 
 int main()
 {
-	draw();
+	//draw();
 	ColorText();
 }
 void draw()

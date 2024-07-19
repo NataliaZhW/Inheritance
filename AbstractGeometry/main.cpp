@@ -16,7 +16,7 @@ namespace Geometry
 	{
 		CONSOLE_BLUE = 0x09,
 		CONSOLE_GREEN = 0xAA,
-		CONSOLE_RED = 0xCC,
+		CONSOLE_RED = 0x04,
 		CONSOLE_DEFAULT = 0x07,
 
 		RGB_DEFAULT = (0xff000000),
@@ -36,6 +36,8 @@ namespace Geometry
 	{
 	private:
 	protected://Защищенные поля, доступны только внутри класса, и внутри его дочерних классов, к этим полям можно будет обращаться напрямую в дочерних классах (без get/set-методов)	
+		static const int MAX_X = 1920;
+		static const int MAX_Y = 1050;
 		Color color;
 		unsigned int start_x;
 		unsigned int start_y;
@@ -206,11 +208,32 @@ namespace Geometry
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 
-			::Ellipse(hdc, start_x, start_y, start_x + 2 * radius - line, start_y + 2 * radius - line);
+			if (start_x + 2 * radius - line > MAX_X || start_y + 2 * radius - line > MAX_Y)
+			{
+				HANDLE hConcole = GetStdHandle(STD_OUTPUT_HANDLE);
+				SetConsoleTextAttribute(hConcole, CONSOLE_RED);
+				cout << "Фигура выходит за пределы экрана\n Нарисовать в пределах экрана в левом нижнем углу?";
+				while (true)
+				{
+					char key;
+					cin >> key;
+					if (key == 'n' || key == 'N')
+					{
+						::Ellipse(hdc, start_x, start_y, start_x + 2 * radius - line, start_y + 2 * radius - line);
+						break;
+					}
+					else if (key == 'y' || key == 'Y')
+					{
+						::Ellipse(hdc, MAX_X - 2 * radius - line, MAX_Y - 2 * radius - line, 1920, 1050);
+						break;
+					}
+				}
+				SetConsoleTextAttribute(hConcole, 0x07);
+			}
 
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
-
+			
 			ReleaseDC(hwnd, hdc);
 		}
 	};
@@ -247,7 +270,7 @@ int main()
 	Geometry::Rectangle rectangle1(150, 80, 50, 250, 3, Geometry::Color::RGB_BLUE);
 	rectangle1.info();
 
-	Geometry::Circle circle1(100, 50, 250, 70, Geometry::Color::RGB_ELLOW);
+	Geometry::Circle circle1(100, 200, 1050, 70, Geometry::Color::RGB_ELLOW);
 	circle1.info();
 	//system("pause"); 
 }

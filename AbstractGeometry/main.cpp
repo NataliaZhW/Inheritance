@@ -19,7 +19,7 @@ namespace Geometry
 		CONSOLE_RED = 0xCC,
 		CONSOLE_DEFAULT = 0x07,
 
-		RGB_DEFAULT = (0xff000000), 
+		RGB_DEFAULT = (0xff000000),
 		RGB_RED = (0x00ff0000), //Добавляем RGB цвета
 		RGB_GREEN = (0x0000ff00),
 		RGB_BLUE = (0x00ffff00),
@@ -35,7 +35,7 @@ namespace Geometry
 	class Shape
 	{
 	private:
-	protected:
+	protected://Защищенные поля, доступны только внутри класса, и внутри его дочерних классов, к этим полям можно будет обращаться напрямую в дочерних классах (без get/set-методов)	
 		Color color;
 		unsigned int start_x;
 		unsigned int start_y;
@@ -192,16 +192,21 @@ namespace Geometry
 		virtual double get_perimeter()const { return get_radius() * PI * 2; }
 		void draw()const override
 		{
-			//system("CLS");
-			HWND hwnd = GetConsoleWindow();
+			//system("CLS");// очистка экрана консоли
+			HWND hwnd = GetConsoleWindow();//Handler to Window(обработчик или дескриптор окна)			
 			HDC hdc = GetDC(hwnd); // выделяем память  потом надо сделать ReleaseDC(hwnd, hdc);
-			HPEN hPen = CreatePen(PS_SOLID, line_width, get_Color());
+			int line = line_width > radius ? radius : line_width;
+			//HPEN hPen = CreatePen(PS_SOLID, line, get_Color());
+			HPEN hPen = CreatePen(PS_SOLID, line, get_Color());
+
 			//HBRUSH hBrush = CreateSolidBrush(get_Color()); //Закрашеный
-			HBRUSH hBrush = CreateSolidBrush(Geometry::Color::RGB_GREEN); //Только границы
+			HBRUSH hBrush = CreateSolidBrush(Geometry::Color::RGB_GREEN); //Закрасить зеленым
+			//HBRUSH hBrush = CreateSolidBrush(Geometry::Color::CONSOLE_DEFAULT); //Только границы
 
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
-			::Ellipse(hdc, start_x, start_y, start_x + 2 * radius, start_y + 2 * radius);
+
+			::Ellipse(hdc, start_x, start_y, start_x + 2 * radius - line, start_y + 2 * radius - line);
 
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
@@ -242,7 +247,7 @@ int main()
 	Geometry::Rectangle rectangle1(150, 80, 50, 250, 3, Geometry::Color::RGB_BLUE);
 	rectangle1.info();
 
-	Geometry::Circle circle1(200, 50, 250, 7, Geometry::Color::RGB_ELLOW);
+	Geometry::Circle circle1(100, 50, 250, 70, Geometry::Color::RGB_ELLOW);
 	circle1.info();
 	//system("pause"); 
 }

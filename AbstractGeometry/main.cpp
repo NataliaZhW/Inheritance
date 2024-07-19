@@ -36,8 +36,8 @@ namespace Geometry
 	{
 	private:
 	protected://Защищенные поля, доступны только внутри класса, и внутри его дочерних классов, к этим полям можно будет обращаться напрямую в дочерних классах (без get/set-методов)	
-		static const int MAX_X = 1920;
-		static const int MAX_Y = 1050;
+		static const int MAX_X = 1800; //1920
+		static const int MAX_Y = 900; //1050
 		Color color;
 		unsigned int start_x;
 		unsigned int start_y;
@@ -187,11 +187,12 @@ namespace Geometry
 		// Геттеры и сеттеры
 		void set_radius(int radius) { this->radius = radius; }
 		double get_radius()const { return this->radius; }
+		double get_area()const override { return get_radius() * get_radius() * PI; }
+		double get_diameter()const { return 2 * radius; }
+		double get_perimeter()const { return get_radius() * PI * 2; }
 
 		// Методы
 		void info()const override { Shape::info(); cout << " Circle radius = " << radius << " adres: " << this << "\n"; }
-		double get_area()const override { return get_radius() * get_radius() * PI; }
-		virtual double get_perimeter()const { return get_radius() * PI * 2; }
 		void draw()const override
 		{
 			//system("CLS");// очистка экрана консоли
@@ -224,7 +225,7 @@ namespace Geometry
 					}
 					else if (key == 'y' || key == 'Y')
 					{
-						::Ellipse(hdc, MAX_X - 2 * radius - line, MAX_Y - 2 * radius - line, 1920, 1050);
+						::Ellipse(hdc, MAX_X - 2 * radius - line, MAX_Y - 2 * radius - line, MAX_X, MAX_Y);
 						break;
 					}
 				}
@@ -233,30 +234,60 @@ namespace Geometry
 
 			DeleteObject(hPen);
 			DeleteObject(hBrush);
-			
+
 			ReleaseDC(hwnd, hdc);
 		}
 	};
-	//class Triangle : public Shape
-	//{
-	//public:
-	//	Triangle : public Shape();
-	//	~Triangle : public Shape();
+	class Triangle :public Shape
+	{
+	public:
+		virtual double get_height()const = 0;
+		Triangle(SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS) {}
+		~Triangle() {}
+	};
 
-	//private:
+	class EquilateralTriangle :public Triangle //Равносторонний треугольник
+	{
+		double side;
+	public:
+		EquilateralTriangle(double side, SHAPE_TAKE_PARAMETERS) :Triangle(SHAPE_GIVE_PARAMETERS) { set_side(side); }
+		~EquilateralTriangle() {};
 
-	//};
+		double get_side()const { return side; }
+		void set_side(double side) { this->side = side; }
+		double get_height()const override { return sqrt(side * side - side / 2 * side / 2); }
+		double get_area()const override { return side / 2 * get_height(); }
+		double get_perimeter()const override { return side * 3; }
+		void draw()const override
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
 
-	//Triangle : public Shape::Triangle : public Shape()
-	//{
-	//}
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
 
-	//Triangle : public Shape::~Triangle : public Shape()
-	//{
-	//}
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
 
+			//определяем массив точек треугольника
+			POINT point[] =
+			{
+				{start_x, get_height() + start_y},
+				{side + start_x, get_height() + start_y},
+				{side / 2 + start_x, start_y}
+			};
+			// Рисуем треугольник:
+			Polygon(hdc, point, 3);
 
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+
+			ReleaseDC(hwnd, hdc);
+		}
+	};
 }
+
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
@@ -272,5 +303,9 @@ int main()
 
 	Geometry::Circle circle1(100, 200, 1050, 70, Geometry::Color::RGB_ELLOW);
 	circle1.info();
+
+
+	Geometry::EquilateralTriangle e_triangle(120, 550, 50, 3, Geometry::Color::RGB_GREEN);
+	e_triangle.info();
 	//system("pause"); 
 }

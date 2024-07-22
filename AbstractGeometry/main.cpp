@@ -43,6 +43,7 @@ namespace Geometry
 		unsigned int start_x;
 		unsigned int start_y;
 		unsigned int line_width;	//толщина линии
+
 	public:
 		Shape(SHAPE_TAKE_PARAMETERS) : color(color) { set_start_x(start_x);	set_start_y(start_y); set_line_width(line_width); };
 		virtual ~Shape() {};
@@ -116,7 +117,7 @@ namespace Geometry
 			set_width(width);
 			set_height(height);
 		}
-		virtual ~Rectangle() {};
+		~Rectangle() {};
 
 		double get_area()  const override { return width * height; };
 		void set_width(double width) { this->width = width; }
@@ -248,9 +249,14 @@ namespace Geometry
 	class Triangle :public Shape
 	{
 	public:
-		virtual double get_height()const = 0;
 		Triangle(SHAPE_TAKE_PARAMETERS) :Shape(SHAPE_GIVE_PARAMETERS) {}
 		~Triangle() {}
+		virtual double get_height()const = 0;
+		void info() const override
+		{
+			cout << "Высота треугольника: " << get_height() << "\n";
+			Shape::info();
+		}
 	};
 
 	class EquilateralTriangle :public Triangle //Равносторонний треугольник
